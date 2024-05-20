@@ -1,3 +1,5 @@
 polars==0.20.21
-youtube_transcript_api==0.6.2
+youtube-transcript-api==0.6.2
 matplotlib==3.8.0
+requests==2.31.0
+flake8==7.0.0
