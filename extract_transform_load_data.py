@@ -149,7 +149,7 @@ def transform_data():
 channel_id = None  # 'UCa9gErQ9AE5jT2DZLjXBIdA'
 channel_name = 'aiexplained-official'
 url = 'https://www.googleapis.com/youtube/v3/search'
-my_key = os.getenv('my_key')
+my_key = os.getenv('my_key')  # from YouTube Data API v3 on GCP
 
 if channel_id is None:
     channel_id = get_channel_id(channel_name, my_key)
