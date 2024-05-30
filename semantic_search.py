@@ -10,7 +10,6 @@ from sklearn.metrics import DistanceMetric
 import numpy as np
 import matplotlib.pyplot as plt
 
-
 print("Loading the model")
 model = SentenceTransformer('paraphrase-MiniLM-L6-v2')
 print("Model loaded")
