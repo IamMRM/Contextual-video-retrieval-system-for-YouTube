@@ -52,8 +52,8 @@ df_eval = pl.read_csv('data/eval-raw.csv')
 
 column_to_embed_list = ['title', 'transcript']
 # models taken from https://sbert.net/docs/pretrained_models.html
-model_name_list = ["all-mpnet-base-v2", "all-MiniLM-L12-v2"]#, "multi-qa-distilbert-cos-v1", "multi-qa-mpnet-base-dot-v1", "all-MiniLM-L6-v2"]
-
+#"all-mpnet-base-v2", "all-MiniLM-L12-v2"
+model_name_list = ["all-MiniLM-L6-v2", "multi-qa-distilbert-cos-v1", "multi-qa-mpnet-base-dot-v1"]
 # initialize dict to keep track of all text embeddings
 text_embedding_dict = {}
 
@@ -67,8 +67,6 @@ for model_name in model_name_list:
         print(key_name)
         embedding_arr = model.encode(df[column_name].to_list())
         text_embedding_dict[key_name] = embedding_arr
-
-print(text_embedding_dict.shape)
 
 # same embedding but for evaluation dataset
 query_embedding_dict = {}
@@ -185,3 +183,21 @@ print(df_summary.sort("num_in_top-1", descending=True).head())
 print(df_summary.sort("num_in_top-3", descending=True).head())
 for i in range(4):
     print(df_summary.sort("num_in_top-3", descending=True)['method_name'][i])
+
+# Conclusion
+model_name = 'all-MiniLM-L6-v2'
+column_name_list = ['title', 'transcript']
+model = SentenceTransformer(model_name)
+
+for column_name in column_name_list:
+    # generate embeddings
+    embedding_arr = model.encode(df[column_name].to_list())
+
+    # store embeddings in a dataframe
+    schema_dict = {column_name+'_embedding-'+str(i): float for i in range(embedding_arr.shape[1])}
+    df_embedding = pl.DataFrame(embedding_arr, schema=schema_dict)
+
+    # append embeddings to video index
+    df = pl.concat([df, df_embedding], how='horizontal')
+
+df.write_parquet('data/video-index.parquet')
