@@ -13,7 +13,7 @@ dist = DistanceMetric.get_metric(dist_name)
 
 def returnSearchResults(query: str, index: pl.lazyframe.frame.LazyFrame) -> np.ndarray:
     """
-        Function to return indexes of top search results
+        Function to return indexes of top search result
     """
 
     # embed query
